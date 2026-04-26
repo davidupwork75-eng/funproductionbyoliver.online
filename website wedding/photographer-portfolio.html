@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fun Production — Оливер Ангелески Фотографија</title>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f5f0e8;
+      --warm-white: #faf8f4;
+      --dark: #1a1714;
+      --mid: #3d3831;
+      --muted: #8c8278;
+      --accent: #f0b800;
+      --border: rgba(26,23,20,0.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
+      background: var(--warm-white);
+      color: var(--dark);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 26px 60px;
+      transition: background 0.4s, padding 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(250,248,244,0.96);
+      backdrop-filter: blur(14px);
+      padding: 14px 60px;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      border-radius: 7px;
+      padding: 4px 7px;
+      background: rgba(255,255,255,0.92);
+      transition: background 0.35s, padding 0.35s;
+    }
+    nav.scrolled .nav-logo {
+      background: transparent;
+      padding: 0;
+    }
+    .nav-logo img {
+      height: 36px;
+      width: auto;
+      display: block;
+    }
+
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    nav.scrolled .nav-links a { color: var(--mid); }
+    .nav-links a:hover, nav.scrolled .nav-links a:hover { color: var(--accent); }
+
+    .nav-cta {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #fff;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.4);
+      padding: 9px 20px;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    nav.scrolled .nav-cta { color: var(--dark); border-color: var(--dark); }
+    .nav-cta:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    .nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .nav-burger span { display: block; width: 24px; height: 1px; background: #fff; transition: background 0.3s; }
+    nav.scrolled .nav-burger span { background: var(--dark); }
+
+    /* HERO */
+    #hero {
+      position: relative;
+      height: 100vh;
+      min-height: 640px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 60px 80px;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('558866948_122249302370189127_6647896246966677336_n.jpg');
+      background-size: cover;
+      background-position: center 40%;
+      transform: scale(1.04);
+      transition: transform 9s ease;
+    }
+    .hero-bg.loaded { transform: scale(1); }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(8,6,4,0.95) 0%, rgba(8,6,4,0.6) 45%, rgba(8,6,4,0.35) 100%);
+    }
+    .hero-content { position: relative; z-index: 2; }
+    /* Hero logo */
+    .hero-logo-stamp {
+      margin-bottom: 28px;
+      opacity: 0;
+      transform: translateY(14px);
+      animation: fadeUp 0.9s 0.2s forwards;
+    }
+    .hero-logo-stamp img {
+      height: 72px;
+      width: auto;
+      display: block;
+      border-radius: 10px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    }
+
+    /* About logo */
+    .about-logo {
+      margin-top: 28px;
+    }
+    .about-logo img {
+      height: 58px;
+      width: auto;
+      display: block;
+      border-radius: 8px;
+    }
+
+    .hero-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.44em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 22px;
+      opacity: 0;
+      transform: translateY(18px);
+      animation: fadeUp 0.9s 0.3s forwards;
+    }
+    .hero-title {
+      font-size: clamp(46px, 7.2vw, 104px);
+      font-weight: 700;
+      line-height: 0.96;
+      color: #fff;
+      letter-spacing: -0.025em;
+      opacity: 0;
+      transform: translateY(26px);
+      animation: fadeUp 1s 0.55s forwards;
+    }
+    .hero-title .thin { font-weight: 300; color: rgba(255,255,255,0.72); }
+    .hero-title .gold { color: var(--accent); }
+    .hero-sub {
+      margin-top: 26px;
+      font-size: 12px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.9s 0.85s forwards;
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 42px; right: 60px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(255,255,255,0.38);
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeIn 1s 1.5s forwards;
+    }
+    .hero-scroll::before {
+      content: '';
+      width: 38px; height: 1px;
+      background: rgba(255,255,255,0.22);
+      display: block;
+    }
+
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    /* COMMON */
+    section { padding: 110px 60px; }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.44em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-size: clamp(28px, 4vw, 54px);
+      font-weight: 400;
+      line-height: 1.08;
+      letter-spacing: -0.015em;
+      color: var(--dark);
+    }
+
+    /* ABOUT */
+    #about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about-img-wrap { position: relative; }
+    .about-img {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+    .about-badge {
+      position: absolute;
+      bottom: -26px; right: -26px;
+      background: var(--accent);
+      color: #fff;
+      padding: 20px 26px;
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      line-height: 1.7;
+    }
+    .about-badge strong {
+      display: block;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .about-text { padding-left: 12px; }
+    .about-text p {
+      font-size: 15px;
+      line-height: 1.95;
+      color: var(--mid);
+      margin-top: 26px;
+    }
+    .about-text p + p { margin-top: 14px; }
+    .about-sig {
+      margin-top: 38px;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: var(--dark);
+    }
+    .about-sig .role {
+      display: block;
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+    .about-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 44px;
+      padding-top: 38px;
+      border-top: 1px solid var(--border);
+    }
+    .stat-n {
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+    .stat-l {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* PHOTO CARD — no aspect-ratio here; grid-auto-rows controls height */
+    .photo-card {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .photo-card:hover img { transform: scale(1.055); }
+    .photo-card-ov {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(8,6,4,0.78) 0%, rgba(8,6,4,0) 52%);
+      opacity: 0;
+      transition: opacity 0.35s;
+      display: flex;
+      align-items: flex-end;
+      padding: 20px 22px;
+    }
+    .photo-card:hover .photo-card-ov { opacity: 1; }
+    .cap-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+    }
+    .cap-sub {
+      font-size: 10px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+
+    /* WEDDING */
+    #wedding { background: var(--dark); padding: 90px 60px 110px; }
+    .wedding-header { margin-bottom: 36px; }
+    .wedding-header .section-label { color: var(--accent); }
+    .wedding-header .section-title { color: #fff; }
+
+    .wedding-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 340px;
+      gap: 3px;
+    }
+
+    /* PORTRAITS */
+    #portraits { padding: 90px 60px 110px; }
+    .section-header { margin-bottom: 40px; }
+
+    .portraits-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 440px;
+      gap: 3px;
+    }
+
+    /* HOLIDAY */
+    #holiday { background: var(--cream); padding: 90px 60px 110px; }
+    .holiday-desc {
+      margin-top: 14px;
+      font-size: 15px;
+      color: var(--mid);
+      max-width: 560px;
+      line-height: 1.85;
+    }
+    .holiday-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 300px;
+      gap: 3px;
+      margin-top: 40px;
+    }
+
+    /* SPAN HELPERS */
+    .s2 { grid-column: span 2; }
+    .s3 { grid-column: span 3; }
+    .s4 { grid-column: span 4; }
+
+    /* SERVICES */
+    #services {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .services-left p {
+      font-size: 15px;
+      line-height: 1.95;
+      color: var(--mid);
+      margin-top: 24px;
+    }
+    .services-right { padding-top: 12px; }
+    .svc {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+    .svc:last-child { border-bottom: 1px solid var(--border); }
+    .svc-num {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--accent);
+      min-width: 22px;
+      padding-top: 3px;
+    }
+    .svc-name {
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--dark);
+      margin-bottom: 7px;
+    }
+    .svc-desc { font-size: 13px; line-height: 1.85; color: var(--muted); }
+
+    /* CONTACT */
+    #contact {
+      background: var(--dark);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    #contact .section-label { color: var(--accent); }
+    #contact .section-title { color: #fff; margin-bottom: 24px; }
+    .contact-left p { font-size: 15px; line-height: 1.9; color: rgba(255,255,255,0.5); }
+    .contact-details { margin-top: 44px; }
+    .c-row { display: flex; flex-direction: column; margin-bottom: 26px; }
+    .c-lbl {
+      font-size: 10px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .c-val {
+      font-size: 17px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.82);
+      letter-spacing: -0.01em;
+    }
+
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.32);
+      margin-bottom: 10px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.13);
+      padding: 9px 0;
+      font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.82);
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: rgba(255,255,255,0.2); }
+    .form-group select option { background: var(--dark); color: #fff; }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-bottom-color: var(--accent); }
+    .form-group textarea { resize: vertical; min-height: 88px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .btn-submit {
+      margin-top: 16px;
+      display: inline-block;
+      padding: 14px 44px;
+      background: var(--accent);
+      color: var(--dark);
+      font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-submit:hover { background: #fff; }
+
+    /* FOOTER */
+    footer {
+      background: #0d0b09;
+      padding: 50px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-logo img {
+      height: 52px;
+      width: auto;
+      display: block;
+      border-radius: 8px;
+    }
+    .footer-links { display: flex; gap: 26px; }
+    .footer-links a {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.28);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-copy { font-size: 11px; letter-spacing: 0.06em; color: rgba(255,255,255,0.28); }
+
+    /* SCROLL REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 0.85s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 0.85s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* LIGHTBOX */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(8,6,4,0.96);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox.open { display: flex; }
+    .lb-img { max-width: 88vw; max-height: 88vh; object-fit: contain; }
+    .lb-close {
+      position: absolute;
+      top: 20px; right: 28px;
+      color: rgba(255,255,255,0.55);
+      font-size: 38px;
+      font-weight: 300;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .lb-close:hover { color: var(--accent); }
+    .lb-cap {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.42);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    /* MOBILE */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      nav.scrolled { padding: 12px 24px; }
+      .nav-links, .nav-cta { display: none; }
+      .nav-burger { display: flex; }
+
+      #hero { padding: 0 24px 52px; min-height: 560px; }
+      .hero-scroll { right: 24px; bottom: 28px; }
+      section { padding: 72px 24px; }
+
+      #about {
+        grid-template-columns: 1fr;
+        gap: 52px;
+        padding: 72px 24px;
+      }
+      .about-img-wrap { max-width: 380px; }
+      .about-img { aspect-ratio: 4/5; }
+      .about-badge { right: 0; bottom: -18px; padding: 16px 20px; }
+      .about-badge strong { font-size: 26px; }
+      .about-text { padding-left: 0; }
+      .about-stats { gap: 28px; flex-wrap: wrap; }
+      .stat-n { font-size: 36px; }
+
+      #wedding { padding: 60px 24px 72px; }
+      .wedding-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-auto-rows: 220px;
+      }
+
+      #portraits { padding: 60px 24px 72px; }
+      .portraits-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-auto-rows: 260px;
+      }
+      .s3 { grid-column: span 2; }
+
+      #holiday { padding: 60px 24px 72px; }
+      .holiday-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-auto-rows: 220px;
+      }
+
+      #services {
+        grid-template-columns: 1fr;
+        gap: 44px;
+        padding: 72px 24px;
+      }
+      #contact {
+        grid-template-columns: 1fr;
+        gap: 48px;
+        padding: 72px 24px;
+      }
+      .form-row { grid-template-columns: 1fr; }
+
+      footer {
+        flex-direction: column;
+        gap: 22px;
+        text-align: center;
+        padding: 36px 24px;
+      }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title { font-size: 38px; line-height: 1.05; }
+      .wedding-grid, .holiday-grid { grid-auto-rows: 180px; }
+      .portraits-grid { grid-auto-rows: 220px; }
+      section { padding: 60px 18px; }
+      #wedding, #portraits, #holiday { padding: 52px 18px 64px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#" class="nav-logo">
+      <img src="fun_production_logo.png" alt="Fun Production by Oliver Angeleski" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">За мене</a></li>
+      <li><a href="#wedding">Свадби</a></li>
+      <li><a href="#portraits">Портрети</a></li>
+      <li><a href="#holiday">Празници</a></li>
+      <li><a href="#services">Услуги</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Резервирај термин</a>
+    <div class="nav-burger" id="burger"><span></span><span></span><span></span></div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-logo-stamp">
+        <img src="fun_production_logo.png" alt="Fun Production by Oliver Angeleski" />
+      </div>
+      <p class="hero-eyebrow">Свадбена и портретна фотографија</p>
+      <h1 class="hero-title">
+        <span class="thin">Секоја приказна</span><br>
+        <span class="gold">заслужува</span><br>
+        да се памети
+      </h1>
+      <p class="hero-sub">Оливер Ангелески, Прилеп, Македонија и пошироко</p>
+    </div>
+    <p class="hero-scroll">Скролај</p>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-img-wrap reveal">
+      <img class="about-img"
+        src="497773050_122226416414189127_5081847001999665220_n.jpg"
+        alt="Fun Production, студио работа на Оливер Ангелески"
+        loading="lazy" />
+      <div class="about-badge">
+        <strong>20+</strong>
+        Години<br>искуство
+      </div>
+    </div>
+    <div class="about-text">
+      <p class="section-label reveal">За мене</p>
+      <h2 class="section-title reveal">Фотограф со страст кон приказни</h2>
+      <p class="reveal">Јас сум Оливер Ангелески, основач на Fun Production. Повеќе од 20 години фотографирам моменти кои остануваат засекогаш, од топли свадби во Македонија до незаборавни венчавки низ цела Европа.</p>
+      <p class="reveal">Мојот пристап е едноставен: се вклопувам во твојот ден, внимателно набљудувам и создавам слики кои изгледаат природно, а чуваат спомени кои траат вечно.</p>
+      <div class="about-sig reveal">
+        Оливер Ангелески
+        <span class="role">Fun Production by Oliver Angeleski</span>
+      </div>
+      <div class="about-logo reveal">
+        <img src="fun_production_logo.png" alt="Fun Production by Oliver Angeleski" />
+      </div>
+      <div class="about-stats">
+        <div class="reveal">
+          <div class="stat-n">20+</div>
+          <div class="stat-l">Години искуство</div>
+        </div>
+        <div class="reveal">
+          <div class="stat-n">400+</div>
+          <div class="stat-l">Снимени свадби</div>
+        </div>
+        <div class="reveal">
+          <div class="stat-n">1000+</div>
+          <div class="stat-l">Фото сесии</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WEDDING PORTFOLIO -->
+  <section id="wedding">
+    <div class="wedding-header reveal">
+      <p class="section-label">Портфолио</p>
+      <h2 class="section-title">Свадби и парови</h2>
+    </div>
+
+    <div class="wedding-grid">
+
+      <!-- Row 1: 2+1+1 = 4 -->
+      <div class="photo-card s2">
+        <img src="558866948_122249302370189127_6647896246966677336_n.jpg"
+             alt="Пар кај Свети Јован Богослов, Охрид" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Свети Јован Богослов, Охрид</p>
+          <p class="cap-sub">Свадба на Охридско Езеро</p>
+        </div></div>
+      </div>
+      <div class="photo-card">
+        <img src="536164756_122242843940189127_3530787168627847140_n.jpg"
+             alt="Пар на плажа при залез со едрилица" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Златен час</p>
+          <p class="cap-sub">Плажна свадба, сончева сесија</p>
+        </div></div>
+      </div>
+      <div class="photo-card">
+        <img src="534962554_122242843994189127_2779102361914804901_n.jpg"
+             alt="Невеста фрла букет при залез на плажа" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Фрлање на букетот</p>
+          <p class="cap-sub">Плажна свадба, портрет при залез</p>
+        </div></div>
+      </div>
+
+      <!-- Row 2: 1+2+1 = 4 -->
+      <div class="photo-card">
+        <img src="532535481_122241715208189127_8890205832989315368_n.jpg"
+             alt="Младоженец скока од пласт слама во поле" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Скокот</p>
+          <p class="cap-sub">Свадба на отворено, поле</p>
+        </div></div>
+      </div>
+      <div class="photo-card s2">
+        <img src="547106429_122245768526189127_6913842761166633509_n.jpg"
+             alt="Пар на прамецот на едрилица со морски пејзаж" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Пловење во иднина</p>
+          <p class="cap-sub">Наутичка сесија, Јадранско Море</p>
+        </div></div>
+      </div>
+      <div class="photo-card">
+        <img src="511126160_122232569354189127_1037372569008031153_n.jpg"
+             alt="Младоженци во двор покриен со брштен" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Брштенов двор</p>
+          <p class="cap-sub">Свадбена сесија на отворено</p>
+        </div></div>
+      </div>
+
+      <!-- Row 3: 1+1+1+1 = 4 -->
+      <div class="photo-card">
+        <img src="504970824_122230754900189127_8223474168991381302_n.jpg"
+             alt="Пар во алеја со тенџиња цвеќе" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Цветна алеја</p>
+          <p class="cap-sub">Сесија за парови, стар град</p>
+        </div></div>
+      </div>
+      <div class="photo-card">
+        <img src="557147740_122248490264189127_7053200256466286900_n.jpg"
+             alt="Пар покажува свадбени прстени со насмевка" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Прстените</p>
+          <p class="cap-sub">Сесија за свршувачка</p>
+        </div></div>
+      </div>
+      <div class="photo-card">
+        <img src="474959830_122202359240189127_2360234154558667780_n.jpg"
+             alt="Младоженци се бакнуваат опкружени со гости, церемонија на отворено" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Прв бакнеж</p>
+          <p class="cap-sub">Свадбена церемонија, природна светлина</p>
+        </div></div>
+      </div>
+      <div class="photo-card">
+        <img src="542752227_122244632762189127_152271544284035086_n.jpg"
+             alt="Споени раце со свадбени прстени, крупен план" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Споени раце</p>
+          <p class="cap-sub">Свадбен детаљ, крупен план</p>
+        </div></div>
+      </div>
+
+      <!-- Row 4: 2+1+1 = 4 -->
+      <div class="photo-card s2">
+        <img src="511123226_122232568520189127_3684255817212847750_n.jpg"
+             alt="Невеста оди кон олтарот со татко, црно-бело" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Патот до олтарот</p>
+          <p class="cap-sub">Свадбена церемонија, документарен стил</p>
+        </div></div>
+      </div>
+      <div class="photo-card">
+        <img src="557976670_122249301152189127_3107386496287618553_n.jpg"
+             alt="Свадбени детали наредени, чевли прстени машна" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Детали за денот</p>
+          <p class="cap-sub">Свадбени подготовки</p>
+        </div></div>
+      </div>
+      <div class="photo-card">
+        <img src="560562175_122249301482189127_3252745666631219222_n.jpg"
+             alt="Невеста се облекува со помош на мама, црно-бело" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Уште малку...</p>
+          <p class="cap-sub">Булска подготовка, документарен стил</p>
+        </div></div>
+      </div>
+
+      <!-- Row 5: 2+2 = 4 -->
+      <div class="photo-card s2">
+        <img src="628479363_122268183566189127_6965290614794249541_n.jpg"
+             alt="Булски чевли со бисери и кала лилји крај море" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Булска елеганција</p>
+          <p class="cap-sub">Свадбени детали, крај морето</p>
+        </div></div>
+      </div>
+      <div class="photo-card s2">
+        <img src="505094243_122230754618189127_4146644658271582878_n.jpg"
+             alt="Пар на тераса при залез, гледаат кон морето" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Кај хоризонтот</p>
+          <p class="cap-sub">Сесија за парови, природна светлина</p>
+        </div></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PORTRAITS -->
+  <section id="portraits">
+    <div class="section-header reveal">
+      <p class="section-label">Портфолио</p>
+      <h2 class="section-title">Портрети и студио</h2>
+    </div>
+
+    <div class="portraits-grid">
+
+      <!-- Row 1: 1+1+1 = 3 -->
+      <div class="photo-card">
+        <img src="497773050_122226416414189127_5081847001999665220_n.jpg"
+             alt="Глам студио портрет, жена во темна фустан со ракавица" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Ноќен шик</p>
+          <p class="cap-sub">Глам студио портрет</p>
+        </div></div>
+      </div>
+      <div class="photo-card">
+        <img src="482328628_122211963812189127_8128512578596842288_n.jpg"
+             alt="Три тинејџерки прават форма на срце со раце" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Најдобри другарки</p>
+          <p class="cap-sub">Студио портрет</p>
+        </div></div>
+      </div>
+      <div class="photo-card">
+        <img src="499166436_122226415766189127_2879727162130740112_n.jpg"
+             alt="Пет жени во елегантни вечерни фустани, студио портрет" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Пет нијанси елеганција</p>
+          <p class="cap-sub">Групна глам студио сесија</p>
+        </div></div>
+      </div>
+
+      <!-- Row 2: 2+1 = 3 -->
+      <div class="photo-card s2">
+        <img src="488768548_122217774410189127_3020466476633974939_n.jpg"
+             alt="Група девојки позираат заедно во студио" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Момент со другарките</p>
+          <p class="cap-sub">Групна студио сесија</p>
+        </div></div>
+      </div>
+      <div class="photo-card">
+        <img src="498199768_122226416042189127_7806632676162609992_n.jpg"
+             alt="Глам портрет, жена во црвена свилена фустан" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Скарлет</p>
+          <p class="cap-sub">Глам портретна сесија</p>
+        </div></div>
+      </div>
+
+      <!-- Row 3: full width -->
+      <div class="photo-card s3">
+        <img src="483755992_122212324946189127_504115187418613649_n.jpg"
+             alt="Голема група ученици позираат во студио, генерациска слика" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Генерациска слика</p>
+          <p class="cap-sub">Школска групна фотографија</p>
+        </div></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- HOLIDAY -->
+  <section id="holiday">
+    <div class="reveal">
+      <p class="section-label">Портфолио</p>
+      <h2 class="section-title">Празнични и семејни</h2>
+      <p class="holiday-desc">Тематски студио сесии за семејства, деца и посебни пригоди. Магичен амбиент создаден за спомени кои траат цел живот.</p>
+    </div>
+
+    <div class="holiday-grid">
+
+      <!-- Row 1: 2+1+1 = 4 -->
+      <div class="photo-card s2">
+        <img src="593554645_122258096054189127_8987898617354816953_n.jpg"
+             alt="Мало девојче грли огромна црвена Божиќна топка" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Прво Божиќ</p>
+          <p class="cap-sub">Бебешки портрет, студио</p>
+        </div></div>
+      </div>
+      <div class="photo-card">
+        <img src="592211946_122257982090189127_1470193313393726499_n.jpg"
+             alt="Две деца примаат подароци од Дедо Мраз" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Кај Дедо Мраз</p>
+          <p class="cap-sub">Детска Божиќна сесија</p>
+        </div></div>
+      </div>
+      <div class="photo-card">
+        <img src="592675940_122257982156189127_1458468887056580015_n.jpg"
+             alt="Деца со Дедо Мраз во зимска поставка" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Зимска земја на чудата</p>
+          <p class="cap-sub">Детска Божиќна сесија</p>
+        </div></div>
+      </div>
+
+      <!-- Row 2: 1+1+1+1 = 4 -->
+      <div class="photo-card">
+        <img src="475762185_122203928540189127_4350750929770308453_n.jpg"
+             alt="Бебе во снежна глобула, студио Божиќна сесија" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Снежна глобула</p>
+          <p class="cap-sub">Бебешки студио портрет</p>
+        </div></div>
+      </div>
+      <div class="photo-card">
+        <img src="475969937_122204424050189127_4653089886106326353_n.jpg"
+             alt="Две браќа позираат во снег со Божиќно дрво" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Браќа во снегот</p>
+          <p class="cap-sub">Детска семејна сесија</p>
+        </div></div>
+      </div>
+      <div class="photo-card">
+        <img src="476030713_122204419706189127_6348821514943464802_n.jpg"
+             alt="Момче држи две шеќерни трски во студио" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Шеќерни трски</p>
+          <p class="cap-sub">Детска портретна сесија</p>
+        </div></div>
+      </div>
+      <div class="photo-card">
+        <img src="476080216_122204422244189127_3195269135278169945_n.jpg"
+             alt="Дедо Мраз држи бебе во раце, Божиќна поставка" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Дедо Мраз и бебе</p>
+          <p class="cap-sub">Семејна Божиќна сесија</p>
+        </div></div>
+      </div>
+
+      <!-- Row 3: 1+1+2 = 4 -->
+      <div class="photo-card">
+        <img src="592583362_122257982228189127_1063345232470728364_n.jpg"
+             alt="Браќа и сестри во снег со Божиќна декорација" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Снежни соништа</p>
+          <p class="cap-sub">Детска Божиќна сесија</p>
+        </div></div>
+      </div>
+      <div class="photo-card">
+        <img src="592928699_122257982822189127_4926171604275421446_n.jpg"
+             alt="Деца со подарок крај зелена врата со Божиќна декорација" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Подарок за тебе</p>
+          <p class="cap-sub">Детска Божиќна сесија</p>
+        </div></div>
+      </div>
+      <div class="photo-card s2">
+        <img src="594313935_122258270648189127_4897296782862246531_n.jpg"
+             alt="Семеен Божиќен портрет со мечиња и еленски рогови" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Семеен портрет</p>
+          <p class="cap-sub">Семејна Божиќна сесија</p>
+        </div></div>
+      </div>
+
+      <!-- Row 4: 2+1+1 = 4 -->
+      <div class="photo-card s2">
+        <img src="594533944_122257982036189127_1290320902674442077_n.jpg"
+             alt="Деца во Божиќна студио со карусел поставка" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Божиќен карусел</p>
+          <p class="cap-sub">Детска Божиќна сесија</p>
+        </div></div>
+      </div>
+      <div class="photo-card">
+        <img src="603074247_122260792310189127_2966154053269117782_n.jpg"
+             alt="Две мали девојчиња читаат книга на клупа во Божиќна декорација" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Детска приказна</p>
+          <p class="cap-sub">Детска портретна сесија</p>
+        </div></div>
+      </div>
+      <div class="photo-card">
+        <img src="604833620_122260780412189127_3668556701317487860_n.jpg"
+             alt="Девојче спие во снежна зимска поставка" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Соништа за Божиќ</p>
+          <p class="cap-sub">Детски портрет, Божиќ</p>
+        </div></div>
+      </div>
+
+      <!-- Row 5: 2+2 = 4 -->
+      <div class="photo-card s2">
+        <img src="599929204_122259335504189127_8933793586098033796_n.jpg"
+             alt="Голема група деца и возрасни во новогодишна студио сесија" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Среќна Нова Година</p>
+          <p class="cap-sub">Новогодишна студио сесија</p>
+        </div></div>
+      </div>
+      <div class="photo-card s2">
+        <img src="600304183_122259884618189127_4456303802086346550_n.jpg"
+             alt="Млада фамилија со бебе крај украсено Божиќно дрво" loading="lazy" />
+        <div class="photo-card-ov"><div>
+          <p class="cap-title">Прво Божиќ на бебето</p>
+          <p class="cap-sub">Семеен Божиќен портрет</p>
+        </div></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="services-left">
+      <p class="section-label reveal">Услуги</p>
+      <h2 class="section-title reveal">Што нудиме</h2>
+      <p class="reveal">Од интимни свадбени церемонии до весели семејни сесии, секоја услуга е прилагодена за твојата приказна, со посветеност и страст кон убавата фотографија.</p>
+    </div>
+    <div class="services-right">
+      <div class="svc reveal">
+        <span class="svc-num">01</span>
+        <div>
+          <p class="svc-name">Свадбена фотографија</p>
+          <p class="svc-desc">Покривање на целиот ден, од подготовките до последниот танц. Документарен стил со уредувачки портрети, секоја емоција зачувана точно онака како што се чувствувала.</p>
+        </div>
+      </div>
+      <div class="svc reveal">
+        <span class="svc-num">02</span>
+        <div>
+          <p class="svc-name">Сесии за парови</p>
+          <p class="svc-desc">Фото сесии пред свадбата на значајни локации. Опуштена прилика да се поврзете пред камерата и да создадете слики кои ќе ги паметите цел живот.</p>
+        </div>
+      </div>
+      <div class="svc reveal">
+        <span class="svc-num">03</span>
+        <div>
+          <p class="svc-name">Портретно и глам студио</p>
+          <p class="svc-desc">Индивидуални, групни и гламурозни портрети во целосно опремен студио. Совршено за лични фотографии, школски портрети и специјални пригоди.</p>
+        </div>
+      </div>
+      <div class="svc reveal">
+        <span class="svc-num">04</span>
+        <div>
+          <p class="svc-name">Празнични и семејни сесии</p>
+          <p class="svc-desc">Тематски Божиќни и сезонски студио сесии за деца и семејства. Магичен амбиент и топла атмосфера за спомени кои траат цел живот.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-left">
+      <p class="section-label reveal">Контакт</p>
+      <h2 class="section-title reveal">Ајде да создадеме нешто убаво</h2>
+      <p class="reveal">Секоја убава приказна почнува со еден разговор. Кажи ни за твојот ден и ќе ти покажеме како да го направиме незаборавен.</p>
+      <div class="contact-details reveal">
+        <div class="c-row">
+          <span class="c-lbl">Телефон</span>
+          <span class="c-val">+389 70 371 988</span>
+        </div>
+        <div class="c-row">
+          <span class="c-lbl">Локација</span>
+          <span class="c-val">Прилеп, Северна Македонија</span>
+        </div>
+        <div class="c-row">
+          <span class="c-lbl">Достапност</span>
+          <span class="c-val">Цела Македонија и пошироко</span>
+        </div>
+        <div class="c-row">
+          <span class="c-lbl">Инстаграм</span>
+          <span class="c-val">@funproductionoliver</span>
+        </div>
+      </div>
+    </div>
+
+    <form class="reveal" id="contactForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fname">Име</label>
+          <input type="text" id="fname" placeholder="Ана" />
+        </div>
+        <div class="form-group">
+          <label for="lname">Презиме</label>
+          <input type="text" id="lname" placeholder="Петрова" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="femail">Е-пошта</label>
+        <input type="email" id="femail" placeholder="ana@example.com" />
+      </div>
+      <div class="form-group">
+        <label for="fservice">Услуга</label>
+        <select id="fservice">
+          <option value="">Избери услуга</option>
+          <option>Свадбена фотографија</option>
+          <option>Сесија за парови</option>
+          <option>Портретно и глам студио</option>
+          <option>Божиќна и семејна сесија</option>
+          <option>Свадбен пакет (фото и видео)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="fdate">Датум на настанот</label>
+        <input type="text" id="fdate" placeholder="ДД / ММ / ГГГГ" />
+      </div>
+      <div class="form-group">
+        <label for="fmsg">Кажи ни за твојот ден</label>
+        <textarea id="fmsg" placeholder="Локација, визија, сè што сакаш да знаеме..."></textarea>
+      </div>
+      <button type="submit" class="btn-submit">Испрати порака</button>
+    </form>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">
+      <img src="fun_production_logo.png" alt="Fun Production by Oliver Angeleski" />
+    </div>
+    <div class="footer-links">
+      <a href="https://www.instagram.com/funproductionoliver/" target="_blank" rel="noopener">Инстаграм</a>
+      <a href="https://www.facebook.com/profile.php?id=61555673812795" target="_blank" rel="noopener">Фејсбук</a>
+      <a href="https://www.youtube.com/@fanprodukcijaoliverangeles4971/videos" target="_blank" rel="noopener">Јутјуб</a>
+    </div>
+    <p class="footer-copy">© 2025 Fun Production by Oliver Angeleski. Сите права задржани.</p>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <span class="lb-close" id="lbClose">&times;</span>
+    <img src="" alt="" class="lb-img" id="lbImg" />
+    <p class="lb-cap" id="lbCap"></p>
+  </div>
+
+  <script>
+    // Nav scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Hero zoom in on load
+    window.addEventListener('load', () => {
+      document.getElementById('heroBg').classList.add('loaded');
+    });
+
+    // Scroll reveal
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          revealObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+    // Stagger photo cards
+    ['.wedding-grid', '.portraits-grid', '.holiday-grid'].forEach(sel => {
+      const grid = document.querySelector(sel);
+      if (!grid) return;
+      grid.querySelectorAll('.photo-card').forEach((el, i) => {
+        el.classList.add('reveal');
+        el.style.transitionDelay = (i * 0.05) + 's';
+        revealObs.observe(el);
+      });
+    });
+
+    // Lightbox
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbCap = document.getElementById('lbCap');
+
+    document.querySelectorAll('.photo-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const img = card.querySelector('img');
+        const title = card.querySelector('.cap-title');
+        const sub = card.querySelector('.cap-sub');
+        lbImg.src = img.src;
+        lbImg.alt = img.alt;
+        lbCap.textContent = title ? title.textContent + (sub ? ', ' + sub.textContent : '') : '';
+        lb.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    document.getElementById('lbClose').addEventListener('click', closeLb);
+    lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
+
+    function closeLb() {
+      lb.classList.remove('open');
+      document.body.style.overflow = '';
+      setTimeout(() => { lbImg.src = ''; }, 300);
+    }
+
+    // Viber form submission
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const ime     = document.getElementById('fname').value.trim();
+      const prezime = document.getElementById('lname').value.trim();
+      const email   = document.getElementById('femail').value.trim();
+      const usluga  = document.getElementById('fservice').value;
+      const datum   = document.getElementById('fdate').value.trim();
+      const poraka  = document.getElementById('fmsg').value.trim();
+
+      const tekst =
+        'Нова порака од Fun Production by Oliver Angeleski веб-сајт\n\n' +
+        'Ime: ' + ime + ' ' + prezime + '\n' +
+        'E-poshta: ' + (email || 'ne e navedena') + '\n' +
+        'Usluga: ' + (usluga || 'ne e izbrana') + '\n' +
+        'Datum: ' + (datum || 'ne e naveden') + '\n' +
+        'Poraka: ' + (poraka || '');
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(tekst).catch(function() {});
+      }
+      window.open('viber://chat?number=%2B38970371988', '_blank');
+    });
+  </script>
+</body>
+</html>
